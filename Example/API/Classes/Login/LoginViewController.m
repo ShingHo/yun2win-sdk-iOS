@@ -37,8 +37,8 @@
     self.psdTextField.delegate = self;
     [self.loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     
-    self.accountTextField.text = @"z";
-    self.psdTextField.text = @"z";
+    self.accountTextField.text = @"a";
+    self.psdTextField.text = @"a";
 //    [self login];
 }
 

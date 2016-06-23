@@ -159,7 +159,9 @@
 
 - (void)storeAVCallMessage:(Y2WBaseMessage *)message;
 
-- (void)updataMessage:(Y2WBaseMessage *)message success:(void (^)(Y2WBaseMessage *message))success
+- (void)updataMessage:(Y2WBaseMessage *)message
+              session:(Y2WSession *)session
+              success:(void (^)(Y2WBaseMessage *message))success
               failure:(void (^)(NSError *error))failure;
 
 /**

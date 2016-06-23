@@ -42,18 +42,20 @@
 - (void)syncEmoji
 {
     [HttpRequest GETWithURL:[URL emojis] timeStamp:self.timeStamp parameters:@{@"limit":@(100)} success:^(id data) {
-        NSArray *tempArr = data[@"entries"];
-        NSInteger totalCount = [data[@"total_count"] integerValue];
-        NSInteger surplusCount = totalCount - tempArr.count;
-        
-        [self downloadEmoji:tempArr success:^(NSArray *emojiArray) {
-            [self createPlist:emojiArray];
-        } failure:^(NSError *error) {
-        }];
-        if (surplusCount > 100) {
-            self.timeStamp = tempArr.lastObject[@"updatedAt"];
-            [self syncEmoji];
-        }
+        dispatch_async(self.dispath_queue_background, ^{
+            NSArray *tempArr = data[@"entries"];
+            NSInteger totalCount = [data[@"total_count"] integerValue];
+            NSInteger surplusCount = totalCount - tempArr.count;
+            
+            [self downloadEmoji:tempArr success:^(NSArray *emojiArray) {
+                [self createPlist:emojiArray];
+            } failure:^(NSError *error) {
+            }];
+            if (surplusCount > 100) {
+                self.timeStamp = tempArr.lastObject[@"updatedAt"];
+                [self syncEmoji];
+            }
+        });
     
     } failure:^(NSError *error) {
         

@@ -746,12 +746,13 @@ static BOOL isTap = NO;
 
 - (void)revokeMessage:(Y2WBaseMessage *)message
 {
-    message.sessionId = self.session.sessionId;
-    message.type = @"system";
-    message.content = @{@"text":@"回撤了一条信息"};
-    message.text = @"回撤了一条信息";
+    Y2WBaseMessage *uMessage = message;
+    uMessage.sessionId = self.session.sessionId;
+    uMessage.type = @"system";
+    uMessage.content = @{@"text":[NSString stringWithFormat:@"%@回撤了一条信息",[Y2WUsers getInstance].getCurrentUser.name]};
+    uMessage.text = [NSString stringWithFormat:@"%@回撤了一条信息",[Y2WUsers getInstance].getCurrentUser.name];
 //    message.status = @"storing";
-    [self.session.messages.remote updataMessage:message success:^(Y2WBaseMessage *message) {
+    [self.session.messages.remote updataMessage:uMessage session:self.session success:^(Y2WBaseMessage *message) {
         
     } failure:^(NSError *error) {
         NSLog(@"revokeMessage : %@",error);
